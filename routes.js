@@ -5,6 +5,8 @@ const { authenticateUser } = require("./middleware/auth-user");
 const router = express.Router();
 
 //User routes
+
+//Get route that responds with the current authenticated user using the API
 router.get(
   "/users",
   authenticateUser,
@@ -22,15 +24,13 @@ router.get(
   })
 );
 
+//Post route to create a new user.
 router.post(
   "/users",
   asyncHandler(async (req, res) => {
     try {
       await User.create(req.body);
-      res
-        .setHeader("Location", "/")
-        .status(201)
-        .json({ message: "Account succesfully created!" });
+      res.setHeader("Location", "/").status(201).end();
     } catch (error) {
       if (
         error.name === "SequelizeValidationError" ||
@@ -99,10 +99,7 @@ router.post(
     try {
       const newCourse = await Course.create(req.body);
 
-      res
-        .setHeader("Location", `/courses/${newCourse.id}`)
-        .status(201)
-        .json({ message: "Course Succesfully created!" });
+      res.setHeader("Location", `/courses/${newCourse.id}`).status(201).end();
     } catch (error) {
       if (error.name === "SequelizeValidationError") {
         const errors = error.errors.map((err) => err.message);

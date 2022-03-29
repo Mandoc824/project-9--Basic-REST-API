@@ -55,7 +55,11 @@ const server = app.listen(app.get("port"), () => {
 });
 
 (async () => {
-  await sequelize.sync();
-  await sequelize.authenticate();
-  console.log("Connection to the database has been successful!");
+  try {
+    await sequelize.sync();
+    await sequelize.authenticate();
+    console.log("Connection to the database has been successful!");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
 })();
